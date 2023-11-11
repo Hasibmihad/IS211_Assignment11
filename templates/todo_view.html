@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Task Table</title>
+  <title>To Do LIST</title>
   <style>
     table {
       width: 100%;
@@ -17,6 +17,16 @@
     }
     th {
       background-color: #f2f2f2;
+    }
+    form {
+      margin-top: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    input, select {
+      margin-bottom: 12px;
     }
   </style>
 </head>
@@ -40,18 +50,37 @@
             {% endfor %}
         </tr>
       {% endfor %}
-     
-        <td>Task 1</td>
-        <td>email@example.com</td>
-        <td>High</td>
-      </tr>
-      <tr>
-        <td>Task 2</td>
-        <td>another.email@example.com</td>
-        <td>Medium</td>
-      </tr>
     </tbody>
   </table>
+  <br>
+  <h2>Task Submit</h2>
+  <form action="/submit" method="post">
+    <label for="task">Task:</label>
+    <input type="text" id="task" name="task" required>
 
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" required>
+
+    <label for="priority">Priority:</label>
+    <select id="priority" name="priority" required>
+      <option value="Low">Low</option>
+      <option value="Medium">Medium</option>
+      <option value="High">High</option>
+    </select>
+
+    <input type="submit" value="Add To-Do-Item">
+  </form>
+  <br>
+  <h3>Save Data</h3>
+  <form action="/save" method="post">
+    <input type="submit" value="SAVE">
+</form>
+<br>
+  <h3>Clear Data</h3>
+  <form action="/clear" method="post">
+    <input type="submit" value="CLEAR">
+  </form>
+  <br>
+  
 </body>
 </html>

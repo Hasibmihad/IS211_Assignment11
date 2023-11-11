@@ -1,5 +1,12 @@
 from flask import Flask, redirect,render_template, request
 import re
+import os
+import json
+file_name = 'todo_list.json'
+toDoList=[[]]
+if os.path.exists(file_name):
+    with open(file_name, 'r') as file:
+        toDoList = json.load(file)
 def validate_email(email):
     email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
     return re.match(email_regex, email) is not None
@@ -10,19 +17,13 @@ def validate_priority(priority):
 
 
 app = Flask(__name__)
-toDoList=[['Buy Milk','123@gmail.com','High'],['Buy Cow','123cow@gmail.com','Medium']]
+
 @app.route('/')
 def hello_world():
-    return redirect('/todo_view.html')
-
-
-
-@app.route('/todo_view.html')
-def view():
     return render_template('todo_view.html', toDoList=toDoList)
 
 @app.route('/submit', methods = ['POST'])
-def submit():
+def submitForm():
     email = request.form['email']
     task = request.form['task']
     priority = request.form['priority']
@@ -37,8 +38,20 @@ def submit():
     
     return redirect('/')
 
+@app.route('/clear', methods = ['POST'])
+def clearData():
+   global toDoList
+   toDoList = []
+   return redirect('/')
+@app.route('/save', methods=['POST'])
+def save_list():
+    global toDoList
+    with open(file_name, 'w') as file:
+        json.dump(toDoList, file)
+    return redirect('/')
 
 
 if __name__ == '__main__':
     app.run()
+
 
